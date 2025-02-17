@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Warsaw</title>
+    <!-- Bootstrap CSS CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Google Fonts (optional, you can include Fira Sans if desired) -->
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Sans&display=swap" rel="stylesheet">
+    <style>
+      html, body {
+        height: 100%;
+        margin: 0;
+        font-family: 'Fira Sans', sans-serif;
+      }
+      .bg-image {
+        /* Use the Warsaw image from your static folder */
+        background-image: url('{{ url_for("static", filename="warsaw2.jpg") }}');
+        /* Darken the background using a brightness filter */
+        filter: brightness(30%);
+        height: 100%;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
+        position: relative;
+      }
+      .content {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        color: #fff;
+        padding: 20px;
+        overflow-y: auto;
+      }
+      .section-title {
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+      }
+      .section {
+        margin-bottom: 40px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="bg-image"></div>
+    <div class="content">
+      <div class="container">
+        <h1 class="text-center mb-5 section-title">Explore Warsaw</h1>
+        <div class="row">
+          <!-- Visit Section -->
+          <div class="col-md-4 section">
+            <h2 class="section-title">Visit</h2>
+            <p>Discover historical sites, museums, and architectural wonders in Warsaw.</p>
+          </div>
+          <!-- Eat Section -->
+          <div class="col-md-4 section">
+            <h2 class="section-title">Eat</h2>
+            <p>Savor local cuisine, trendy cafes, and the best dining spots in the city.</p>
+          </div>
+          <!-- Cool Things to Do Section -->
+          <div class="col-md-4 section">
+            <h2 class="section-title">Cool Things to Do</h2>
+            <p>Enjoy vibrant nightlife, art galleries, parks, and unique local events.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Bootstrap JS CDN (includes Popper.js) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  </body>
+</html>

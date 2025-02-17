@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Home</title>
+    <!-- Bootstrap CSS CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+     <!-- Google Fonts: Fira Sans (or try Roboto, Open Sans, Lato, Montserrat) -->
+     <link href="https://fonts.googleapis.com/css2?family=Fira+Sans&display=swap" rel="stylesheet">
+    <style>
+      body {
+          background-color: #121212;
+          color: #ffffff;
+          margin: 0;
+          padding: 0;
+          font-family: 'Fira Sans', sans-serif;
+      }
+      .container {
+          min-height: 100vh;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+          text-align: center;
+          padding-bottom: 60px; /* Extra space for the footer */
+      }
+      .profile-pic {
+          width: 200px;
+          height: 200px;
+          border-radius: 50%;
+          object-fit: cover;
+          border: 3px solid #ffffff;
+          animation: fadeIn 2s ease-out;
+      }
+      .description {
+          margin-top: 20px;
+          font-size: 1.2rem;
+          opacity: 0;
+          animation: fadeIn 2s ease-out 1s forwards;
+      }
+      .city-buttons, .extra-text {
+          margin-top: 30px;
+          opacity: 0;
+          animation: fadeIn 2s ease-out 2s forwards;
+      }
+      @keyframes fadeIn {
+          from { opacity: 0; transform: translateY(20px); }
+          to { opacity: 1; transform: translateY(0); }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <!-- Profile picture (ensure profile.jpg exists in the static folder) -->
+      <img src="{{ url_for('static', filename='avatar2.png') }}" alt="Profile Picture" class="profile-pic">
+      <div class="description">
+        <p>Hello and Welcome!</p>
+        <p>Those are my favorite spots from the places that I was living. Take a look!</p>
+      </div>
+      <div class="city-buttons">
+        <p>Choose the city you would like to see from my eyes:</p>
+        <a href="{{ url_for('city', city_name='warsaw') }}" class="btn btn-outline-light m-2">🇵🇱 Warsaw</a>
+        <a href="{{ url_for('city', city_name='astana') }}" class="btn btn-outline-light m-2">🇰🇿 Astana</a>
+        <a href="{{ url_for('city', city_name='porto') }}" class="btn btn-outline-light m-2">🇵🇹 Porto</a>
+        <!-- Add additional city buttons as needed -->
+      </div>
+      <div class="extra-text">
+        <p>Would you like to add something for me to check out? Please 
+          <a href="{{ url_for('suggest') }}" class="btn btn-link text-decoration-underline text-white">go here</a>.
+        </p>
+      </div>
+    </div>
+
+    <!-- Bootstrap JS CDN (includes Popper.js) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  </body>
+</html>
