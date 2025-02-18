@@ -5,68 +5,195 @@
     <title>Warsaw</title>
     <!-- Bootstrap CSS CDN -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Google Fonts (optional, you can include Fira Sans if desired) -->
+    <!-- Leaflet CSS for map styling -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css" />
+    <!-- Google Fonts: Fira Sans -->
     <link href="https://fonts.googleapis.com/css2?family=Fira+Sans&display=swap" rel="stylesheet">
     <style>
-      html, body {
-        height: 100%;
-        margin: 0;
+      body {
         font-family: 'Fira Sans', sans-serif;
+        background-color: #f8f9fa;
+        color: #212529;
+        margin: 0;
+        padding: 0;
       }
-      .bg-image {
-        /* Use the Warsaw image from your static folder */
-        background-image: url('{{ url_for("static", filename="warsaw2.jpg") }}');
-        /* Darken the background using a brightness filter */
-        filter: brightness(30%);
-        height: 100%;
-        background-position: center;
-        background-repeat: no-repeat;
-        background-size: cover;
-        position: relative;
+      .container {
+        padding-bottom: 100px; /* Extra bottom padding so footer doesn't overlap */
       }
-      .content {
-        position: absolute;
-        top: 0;
-        left: 0;
+      /* Dropdown container styling */
+      .dropdown-container {
+        margin-bottom: 20px;
+      }
+      .dropdown-menu {
+        padding: 10px;
+      }
+      .dropdown-menu li {
+        list-style: none;
+      }
+      /* Map container styling (adjust height here to make map bigger or smaller) */
+      #map {
         width: 100%;
-        height: 100%;
-        color: #fff;
+        height: 500px;  /* Change this value to adjust map size */
+        border: 2px solid #dee2e6;
+      }
+      /* Description block below the map */
+      .description {
         padding: 20px;
-        overflow-y: auto;
+        background-color: #ffffff;
+        margin-top: 20px;
+        border-radius: 5px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
       }
-      .section-title {
-        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+      /* Extra description block with thank-you message and link to home */
+      .extra-description {
+        padding: 20px;
+        background-color: #ffffff;
+        margin: 40px 0;
+        border-radius: 5px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        opacity: 0;
+        animation: fadeIn 2s forwards;
       }
-      .section {
-        margin-bottom: 40px;
+      @keyframes fadeIn {
+        from {opacity: 0; transform: translateY(20px);}
+        to {opacity: 1; transform: translateY(0);}
+      }
+      /* Footer styling */
+      footer {
+        background-color: #e9ecef;
+        color: #495057;
+        text-align: center;
+        padding: 15px 0;
+        margin-top: 20px;
       }
     </style>
   </head>
   <body>
-    <div class="bg-image"></div>
-    <div class="content">
-      <div class="container">
-        <h1 class="text-center mb-5 section-title">Explore Warsaw</h1>
-        <div class="row">
-          <!-- Visit Section -->
-          <div class="col-md-4 section">
-            <h2 class="section-title">Visit</h2>
-            <p>Discover historical sites, museums, and architectural wonders in Warsaw. My top will be here and here</p>
-          </div>
-          <!-- Eat Section -->
-          <div class="col-md-4 section">
-            <h2 class="section-title">Eat</h2>
-            <p>Savor local cuisine, trendy cafes, and the best dining spots in the city.</p>
-          </div>
-          <!-- Cool Things to Do Section -->
-          <div class="col-md-4 section">
-            <h2 class="section-title">Cool Things to Do</h2>
-            <p>Enjoy vibrant nightlife, art galleries, parks, and unique local events.</p>
-          </div>
+    <div class="container mt-3">
+      <!-- Dropdown container for multiple category selection -->
+      <div class="dropdown-container text-end">
+        <div class="dropdown">
+          <!-- data-bs-auto-close="outside" prevents the dropdown from closing when clicking inside -->
+          <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownCategory" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
+            Choose Category
+          </button>
+          <ul class="dropdown-menu" aria-labelledby="dropdownCategory">
+            <li>
+              <div class="form-check">
+                <input class="form-check-input category-checkbox" type="checkbox" value="attractions" id="catAttractions" onchange="filterPlaces()">
+                <label class="form-check-label" for="catAttractions">Attractions</label>
+              </div>
+            </li>
+            <li>
+              <div class="form-check">
+                <input class="form-check-input category-checkbox" type="checkbox" value="food" id="catFood" onchange="filterPlaces()">
+                <label class="form-check-label" for="catFood">Food</label>
+              </div>
+            </li>
+            <li>
+              <div class="form-check">
+                <input class="form-check-input category-checkbox" type="checkbox" value="nightlife" id="catNightlife" onchange="filterPlaces()">
+                <label class="form-check-label" for="catNightlife">Nightlife</label>
+              </div>
+            </li>
+            <li>
+              <div class="form-check">
+                <input class="form-check-input category-checkbox" type="checkbox" value="parks" id="catParks" onchange="filterPlaces()">
+                <label class="form-check-label" for="catParks">Parks</label>
+              </div>
+            </li>
+          </ul>
         </div>
       </div>
+      <!-- Map container -->
+      <div id="map"></div>
+      <!-- Description block below the map -->
+      <div class="description" id="placeDescription">
+        <h3 id="placeTitle">Select a place in Warsaw</h3>
+        <p id="placeText">Click on a marker on the map to see details about the place.</p>
+      </div>
+      <!-- Extra description block with thank-you message and link to home -->
+      <div class="extra-description text-center">
+        <p>Thank you for checking out these places! I hope you find some of them useful in planning your visit.</p>
+        <a href="{{ url_for('home') }}" class="btn btn-primary">Check Other Cities</a>
+      </div>
     </div>
+    
+    <!-- Footer -->
+    <footer>
+      &copy; <script>document.write(new Date().getFullYear());</script> | Developed in a small room in Warsaw
+    </footer>
+    
     <!-- Bootstrap JS CDN (includes Popper.js) -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Leaflet JS -->
+    <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"></script>
+    <script>
+      // Initialize the map centered on Warsaw with the original OSM tile layer
+      var map = L.map('map').setView([52.2297, 21.0122], 13);
+      
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+          maxZoom: 19,
+          attribution: '&copy; OpenStreetMap contributors'
+      }).addTo(map);
+      
+      // Sample markers data for Warsaw (customize as needed)
+      var places = [
+        { id: 1, category: 'attractions', title: 'Old Town', description: 'Historic Old Town of Warsaw with beautiful architecture.', lat: 52.2470, lng: 21.0151 },
+        { id: 2, category: 'food', title: 'Local Restaurant', description: 'Experience traditional Polish cuisine.', lat: 52.2310, lng: 21.0125 },
+        { id: 3, category: 'nightlife', title: 'Club XYZ', description: 'Partying here is pretty dangerious', lat: 52.2300, lng: 21.0180 },
+        { id: 4, category: 'parks', title: 'Lazienki Park', description: 'A serene park with palaces and beautiful gardens.', lat: 52.2115, lng: 21.0340 }
+      ];
+      
+      var markers = [];
+      
+      // Function to add markers based on selected categories
+      function addMarkers(selectedCategories) {
+        // Remove any existing markers from the map
+        markers.forEach(marker => map.removeLayer(marker));
+        markers = [];
+        
+        // Loop through places and add markers if the place's category is in the selected list.
+        // If no category is selected, show all markers.
+        places.forEach(function(place) {
+          if (selectedCategories.length === 0 || selectedCategories.includes(place.category)) {
+            var marker = L.marker([place.lat, place.lng]).addTo(map);
+            marker.on('click', function() {
+              document.getElementById('placeTitle').innerText = place.title;
+              document.getElementById('placeText').innerText = place.description;
+            });
+            markers.push(marker);
+          }
+        });
+      }
+      
+      // Function to gather checked categories and update markers and dropdown button text
+      function filterPlaces() {
+        var selected = [];
+        var checkboxes = document.querySelectorAll('.category-checkbox');
+        checkboxes.forEach(function(checkbox) {
+          if (checkbox.checked) {
+            selected.push(checkbox.value);
+          }
+        });
+        // Debug log: Uncomment to check selected categories in console
+        // console.log("Selected categories:", selected);
+        addMarkers(selected);
+        updateDropdownButtonText(selected);
+      }
+      
+      // Function to update the dropdown button text based on selected categories
+      function updateDropdownButtonText(selectedCategories) {
+        var btn = document.getElementById('dropdownCategory');
+        if (selectedCategories.length > 0) {
+          btn.innerText = "Category: " + selectedCategories.join(', ');
+        } else {
+          btn.innerText = "Choose Category";
+        }
+      }
+      
+      // Initial load: add all markers (i.e., no filter)
+      addMarkers([]);
+    </script>
   </body>
 </html>
