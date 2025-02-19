@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>Warsaw</title>
+    <title>Porto - Explore the City</title>
     <!-- Bootstrap CSS CDN -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Leaflet CSS for map styling -->
@@ -20,7 +20,7 @@
       .container {
         padding-bottom: 100px; /* Extra bottom padding so footer doesn't overlap */
       }
-      /* Dropdown container styling */
+      /* Dropdown container for multiple category selection */
       .dropdown-container {
         margin-bottom: 20px;
       }
@@ -44,7 +44,7 @@
         border-radius: 5px;
         box-shadow: 0 2px 5px rgba(0,0,0,0.1);
       }
-      /* Extra description block with thank-you message and link to home */
+      /* Extra description block with thank-you message and cities buttons */
       .extra-description {
         padding: 20px;
         background-color: #ffffff;
@@ -63,8 +63,8 @@
         background-color: #e9ecef;
         color: #495057;
         text-align: center;
-        padding: 15px 0;
-        margin-top: 20px;
+        padding: 30px 0;
+        margin-top: 40px;
       }
     </style>
   </head>
@@ -109,17 +109,17 @@
       <div id="map"></div>
       <!-- Description block below the map -->
       <div class="description" id="placeDescription">
-        <h3 id="placeTitle">Select a place in Warsaw</h3>
+        <h3 id="placeTitle">Select a place</h3>
         <p id="placeText">Click on a marker on the map to see details about the place.</p>
       </div>
       <!-- Extra description block with thank-you message and cities buttons -->
       <div class="extra-description text-center">
-        <p>Thank you for checking out these places! We hope you find some of them useful in planning your visit.</p>
+        <p>Thank you for checking out these places in Porto! We hope you find some of them useful in planning your visit.</p>
         <h4 class="mt-4">Check Other Cities</h4>
         <div class="d-flex justify-content-center flex-wrap gap-2 mt-3">
           <a href="{{ url_for('city', city_name='warsaw') }}" class="btn btn-outline-secondary">Warsaw</a>
-          <a href="{{ url_for('city', city_name='astana') }}" class="btn btn-outline-secondary">Astana</a>
-          <a href="{{ url_for('city', city_name='porto') }}" class="btn btn-outline-secondary">Porto</a>
+          <a href="{{ url_for('city', city_name='london') }}" class="btn btn-outline-secondary">Astana</a>
+          <a href="{{ url_for('city', city_name='newyork') }}" class="btn btn-outline-secondary">Porto</a>
           <!-- Add more city buttons as needed -->
         </div>
       </div>
@@ -127,7 +127,7 @@
     
     <!-- Footer -->
     <footer>
-      &copy; <script>document.write(new Date().getFullYear());</script> | Developed in a small room in Warsaw
+      &copy; <script>document.write(new Date().getFullYear());</script> | Developed in a small room in Warsaw ♡
     </footer>
     
     <!-- Bootstrap JS CDN (includes Popper.js) -->
@@ -135,20 +135,20 @@
     <!-- Leaflet JS -->
     <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"></script>
     <script>
-      // Initialize the map centered on Warsaw with the original OSM tile layer
-      var map = L.map('map').setView([52.2297, 21.0122], 13);
+      // Initialize the map centered on Porto using the original OSM tile layer
+      var map = L.map('map').setView([41.1579, -8.6291], 13);
       
       L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
           maxZoom: 19,
           attribution: '&copy; OpenStreetMap contributors'
       }).addTo(map);
       
-      // Sample markers data for Warsaw (customize as needed)
+      // Sample markers data for Porto (customize as needed)
       var places = [
-        { id: 1, category: 'attractions', title: 'Old Town', description: 'Historic Old Town of Warsaw with beautiful architecture.', lat: 52.2470, lng: 21.0151 },
-        { id: 2, category: 'food', title: 'Local Restaurant', description: 'Experience traditional Polish cuisine.', lat: 52.2310, lng: 21.0125 },
-        { id: 3, category: 'nightlife', title: 'Club XYZ', description: 'Partying here is pretty dangerious', lat: 52.2300, lng: 21.0180 },
-        { id: 4, category: 'parks', title: 'Lazienki Park', description: 'A serene park with palaces and beautiful gardens.', lat: 52.2115, lng: 21.0340 }
+        { id: 1, category: 'attractions', title: 'Ribeira', description: 'The historic district along the Douro River with charming streets and buildings.', lat: 41.1419, lng: -8.6110 },
+        { id: 2, category: 'food', title: 'Local Restaurant', description: 'Experience authentic Portuguese cuisine in Porto.', lat: 41.1570, lng: -8.6300 },
+        { id: 3, category: 'nightlife', title: 'Bar Majestic', description: 'A famous and historic bar known for its ambiance.', lat: 41.1490, lng: -8.6070 },
+        { id: 4, category: 'parks', title: 'Crystal Palace Gardens', description: 'Beautiful gardens offering panoramic views over Porto.', lat: 41.1500, lng: -8.6200 }
       ];
       
       var markers = [];
@@ -182,8 +182,6 @@
             selected.push(checkbox.value);
           }
         });
-        // Debug log: Uncomment to check selected categories in console
-        // console.log("Selected categories:", selected);
         addMarkers(selected);
         updateDropdownButtonText(selected);
       }

@@ -32,6 +32,16 @@ def suggest():
 def warsaw():
     return render_template('warsaw.html')
 
+@app.route('/astana')
+def astana():
+    return render_template('astana.html')
+
+@app.route('/porto')
+def porto():
+    return render_template('porto.html')
+
+
+
 
 if __name__ == '__main__':
     app.run(debug=True)
