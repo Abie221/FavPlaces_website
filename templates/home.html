@@ -30,18 +30,18 @@
           border-radius: 50%;
           object-fit: cover;
           border: 3px solid #ffffff;
-          animation: fadeIn 2s ease-out;
+          animation: fadeIn 1s ease-out;
       }
       .description {
           margin-top: 20px;
           font-size: 1.2rem;
           opacity: 0;
-          animation: fadeIn 2s ease-out 1s forwards;
+          animation: fadeIn 1s ease-out 0.5s forwards;
       }
       .city-buttons, .extra-text {
           margin-top: 30px;
           opacity: 0;
-          animation: fadeIn 2s ease-out 2s forwards;
+          animation: fadeIn 1s ease-out 1s forwards;
       }
       @keyframes fadeIn {
           from { opacity: 0; transform: translateY(20px); }
@@ -63,11 +63,6 @@
         <a href="{{ url_for('city', city_name='astana') }}" class="btn btn-outline-light m-2">🇰🇿 Astana</a>
         <a href="{{ url_for('city', city_name='porto') }}" class="btn btn-outline-light m-2">🇵🇹 Porto</a>
         <!-- Add additional city buttons as needed -->
-      </div>
-      <div class="extra-text">
-        <p>Would you like to add something for me to check out? Please 
-          <a href="{{ url_for('suggest') }}" class="btn btn-link text-decoration-underline text-white">go here</a>.
-        </p>
       </div>
     </div>
 

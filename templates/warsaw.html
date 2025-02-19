@@ -92,8 +92,8 @@
             </li>
             <li>
               <div class="form-check">
-                <input class="form-check-input category-checkbox" type="checkbox" value="nightlife" id="catNightlife" onchange="filterPlaces()">
-                <label class="form-check-label" for="catNightlife">Nightlife</label>
+                <input class="form-check-input category-checkbox" type="checkbox" value="walk" id="catNightlife" onchange="filterPlaces()">
+                <label class="form-check-label" for="catNightlife">Walking</label>
               </div>
             </li>
             <li>
@@ -123,6 +123,11 @@
           <!-- Add more city buttons as needed -->
         </div>
       </div>
+      <div class="mt-4 text-center">
+        <a href="{{ url_for('home') }}" class="btn btn-outline-secondary">&larr;</a>
+      </div>
+    </div>
+    </div>
     </div>
     
     <!-- Footer -->
@@ -145,10 +150,22 @@
       
       // Sample markers data for Warsaw (customize as needed)
       var places = [
-        { id: 1, category: 'attractions', title: 'Old Town', description: 'Historic Old Town of Warsaw with beautiful architecture.', lat: 52.2470, lng: 21.0151 },
-        { id: 2, category: 'food', title: 'Local Restaurant', description: 'Experience traditional Polish cuisine.', lat: 52.2310, lng: 21.0125 },
-        { id: 3, category: 'nightlife', title: 'Club XYZ', description: 'Partying here is pretty dangerious', lat: 52.2300, lng: 21.0180 },
-        { id: 4, category: 'parks', title: 'Lazienki Park', description: 'A serene park with palaces and beautiful gardens.', lat: 52.2115, lng: 21.0340 }
+        { id: 1, category: 'attractions', title: 'Old Town', description: 'Typical but well, still worth to go to check out the Newest Old town in Europe.', lat: 52.2470, lng: 21.0151, photo: '/static/warsaw2.jpg' },
+        { id: 2, category: 'food', title: 'Best Ramen', description: 'Called Yatta Ramen - the best Ramnes in Warsaw. Make sure to be hungry! In addition that the palce that I was working as I just came to Warsaw ', lat: 52.237691, lng: 21.021978},
+        { id: 5, category: 'food', title: 'Hidden Coffe around Old Town', description: 'Called: Mariensztat Coffee. A cool place if you would like to grab a cuo of coffee and chill for a moment. You ahve slightly go down from the Old Town, however, you would be surpised that there are almost no tourists there!', lat: 52.246359, lng: 21.017673},
+        { id: 6, category: 'food', title: 'Get Polish Zapiekanka', description: "if you're happen to be in Old Town(probably you are) then go and get yourself a zapiekanka!", lat: 52.249921, lng: 21.011181},
+        { id: 7, category: 'food', title: 'Great French Pastery!', description: "I know you came to Warsaw only to eat French pastery, however, it's located in a great and lively neiberhood. You can combine it with Visla walk! ", lat: 52.232348, lng: 21.055635},
+        { id: 8, category: 'food', title: 'Best Food court!', description: "Located in the heart of new Warsaw (with the big Skyscrapers). Nice palce to spend the evening - Friday/Saturday there are Jazz concerts", lat: 52.232449, lng: 20.991980},
+        { id: 3, category: 'walk', title: 'Politechnika Neighborhood', description: 'One of the best neighborhoods in Warsaw with many restaurants. There are no specific places but just take a walk, the palce is full of young people! ', lat: 52.220188, lng: 21.012421 },
+        { id: 4, category: 'walk', title: 'Lazienki Park', description: 'A serene park with palaces and beautiful gardens.', lat: 52.2115, lng: 21.0340 },
+        { id: 9, category: 'attractions', title: 'Heart of Warsaw - PKIN', description: 'Palace of Culture and Science - quite a nice a place to see the view on the city. Tip: there is an university inside this building, and you can go to 11th floor and you have the view there for FREE :)', lat: 52.231918, lng: 21.006781 },
+        { id: 10, category: 'walk', title: 'Pole Mokotowskie - park', description: "Located near Politechnika there's a great park called Pole Mokotowskie. Considered one of the best parks in Europe. Go and check it out, I can confirm that it's a lovely park", lat: 52.231918, lng: 21.006781 },
+        { id: 11, category: 'attractions', title: 'National Museum', description: "There are not many 'cultural' places in my list but there's 1 museum that is worth to check out. You can find plenty of unique Polish and not only Polish artists.", lat: 52.232117, lng: 21.024203 },
+        { id: 12, category: 'food', title: 'Chopin Cafe,', description: "One of the coolest place to get the coffee with the authentic atmosphere. Sometimes there are peopel playing Chopin's music - check ou the schedule!", lat: 52.233139, lng: 21.024155 },
+        { id: 13, category: 'walk', title: 'Zegrzynskie Lake', description: "As you explored as much as you could, there's a palce that is quite far from Warsaw but yet worth to check out wiht the big and beatiful lake and forest. Affortable place for vacation :) Bus: 705, 735!!", lat: 52.454577, lng: 21.047672 },
+        { id: 14, category: 'walk', title: 'Plac Wilsona', description: "Great area to explore by yourself. Great cinema called Kino Wisla with the authentic expirience! Many parks, and considered one of the best palces in Warsaw to live.", lat: 52.268491, lng: 20.985940  },
+        { id: 14, category: 'attractions', title: 'Warsaw Library Garden', description: "Small garden on top of the library. Quite a nice place to go. Make sure to take a walk around Visla as you are there.", lat:52.242599, lng: 21.024040 }
+
       ];
       
       var markers = [];
@@ -165,9 +182,12 @@
           if (selectedCategories.length === 0 || selectedCategories.includes(place.category)) {
             var marker = L.marker([place.lat, place.lng]).addTo(map);
             marker.on('click', function() {
-              document.getElementById('placeTitle').innerText = place.title;
-              document.getElementById('placeText').innerText = place.description;
-            });
+            document.getElementById('placeTitle').innerText = place.title;
+            // Create a link to Google Maps using the place's coordinates
+            document.getElementById('placeText').innerHTML =
+              place.description +
+              '<br><a target="_blank" href="https://www.google.com/maps?q=' + place.lat + ',' + place.lng + '">View on Google Maps</a>';
+          });
             markers.push(marker);
           }
         });
